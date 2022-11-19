@@ -10,29 +10,31 @@ import (
 	"strconv"
 )
 
-type DownLoadInterface interface {
+type DownLoader interface {
 	// 下载, 返回本地绝对路径
 	DownLoad(url string) (string, error)
 }
 
-type DownLoadImpl struct {
+type DownLoaderImpl struct {
 	dir string // 保存的目录
 }
 
-func NewDownLoad(dir string) DownLoadInterface {
-	return &DownLoadImpl{dir: dir}
+func NewDownLoader(dir string) DownLoader {
+	return &DownLoaderImpl{dir: dir}
 }
 
-func (d *DownLoadImpl) DownLoad(url string) (string, error) {
+func (d *DownLoaderImpl) DownLoad(urlStr string) (string, error) {
+	// 修剪参数
+	urlStr = TrimUrl(urlStr)
+
 	// 获取文件路径
-	filePath, err := d.GetFilePath(url)
+	filePath, err := d.GetFilePath(urlStr)
 	if err != nil {
 		return "", err
 	}
 
 	// 下载
-	err = downloadFile(url, filePath, func(length, downLen int64) {
-		fmt.Println(length, downLen)
+	err = downloadFile(urlStr, filePath, func(length, downLen int64) {
 	})
 
 	return filePath, err
@@ -45,7 +47,6 @@ func downloadFile(url string, localPath string, fb func(length, downLen int64)) 
 		written int64
 	)
 	tmpFilePath := localPath + ".download"
-	fmt.Println(tmpFilePath)
 	//创建一个http client
 	client := new(http.Client)
 	//client.Timeout = time.Second * 60 //设置超时时间
@@ -101,16 +102,14 @@ func downloadFile(url string, localPath string, fb func(length, downLen int64)) 
 		//没有错误了快使用 callback
 		fb(fsize, written)
 	}
-	fmt.Println(err)
 	if err == nil {
 		file.Close()
 		err = os.Rename(tmpFilePath, localPath)
-		fmt.Println(err)
 	}
 	return err
 }
 
-func (d *DownLoadImpl) GetFilePath(url string) (string, error) {
+func (d *DownLoaderImpl) GetFilePath(url string) (string, error) {
 	// 检查目录是否存在不存在就新建
 	if _, err := os.Stat(d.dir); os.IsNotExist(err) {
 		err = os.MkdirAll(d.dir, os.ModePerm)
