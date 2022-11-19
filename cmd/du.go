@@ -13,15 +13,31 @@ import (
 // duCmd represents the du command
 var duCmd = &cobra.Command{
 	Use:   "du",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
+	Short: "du 一键下载 markdown 中图片, 并上传图片到图床并替换链接",
+	Long: `du 一键下载 markdown 中图片, 并上传图片到图床并替换链接. For example:
 
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+du du --from README.md`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("du called")
+		from := cmd.Flag("from").Value.String()
+		dir := cmd.Flag("dir").Value.String()
+		fmt.Println("[下载-上传] ", from, dir)
+
+		toLocal := from + downloadFilePrefix
+		err := d(from, toLocal, dir)
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+
+		fromLocal := toLocal
+		toRemote := from + uploadFilePrefix
+		err = u(fromLocal, toRemote, dir)
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+
+		fmt.Println("[下载-上传完成]", from, dir)
 	},
 }
 

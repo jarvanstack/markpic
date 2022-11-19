@@ -15,10 +15,6 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var (
-	downloadFilePrefix = ".download.md"
-)
-
 // dCmd represents the d command
 var dCmd = &cobra.Command{
 	Use:   "d",
@@ -31,7 +27,8 @@ du d --from README.md -dir tmp/`,
 		dir := cmd.Flag("dir").Value.String()
 		fmt.Println("[下载] ", from, dir)
 
-		err := d(from, dir)
+		to := from + downloadFilePrefix
+		err := d(from, to, dir)
 		if err != nil {
 			fmt.Println(err)
 			return
@@ -41,7 +38,7 @@ du d --from README.md -dir tmp/`,
 	},
 }
 
-func d(from, dir string) error {
+func d(from, to, dir string) error {
 	// 输入
 	formFile, err := os.Open(from)
 	if err != nil {
@@ -52,7 +49,7 @@ func d(from, dir string) error {
 	fromBuf := bufio.NewReader(formFile)
 
 	// 输出
-	toFile, err := os.OpenFile(from+downloadFilePrefix, os.O_CREATE|os.O_WRONLY, 0666)
+	toFile, err := os.OpenFile(to, os.O_CREATE|os.O_WRONLY, 0666)
 	if err != nil {
 		fmt.Println(err)
 		return err

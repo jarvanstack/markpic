@@ -11,6 +11,11 @@ import (
 )
 
 var (
+	downloadFilePrefix = ".download.md"
+	uploadFilePrefix   = ".upload.md"
+)
+
+var (
 	from string
 	dir  string
 )
@@ -22,11 +27,11 @@ var rootCmd = &cobra.Command{
 	Long: `markdown 图片下载上传工具. 例如:
 
 # 将图片下载到本地文件夹中
-du d --from test.md --dir ./images/
+du d --from test.md --dir images/
 # 将图片上传到图床并自动替换到新文件夹
-du u --from test.local.md --picgo /c:/picgo.exe 
+du u --from test.local.md 
 # 一键上传和下载
-du du --from test.md --picgo /c:/picgo.exe`,
+du du --from test.md`,
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
 	// Run: func(cmd *cobra.Command, args []string) { },

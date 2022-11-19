@@ -2,6 +2,14 @@ package upload
 
 import "testing"
 
+/*
+curl --location --request POST 'http://127.0.0.1:36677/upload' --header 'Content-Type: application/json' --data-raw '{
+    "list": [
+        "/mnt/c/Users/dengjiawen/Downloads/ddd1.md"
+    ]
+}'
+*/
+
 func TestUploaderImpl_Upload(t *testing.T) {
 	u := NewUploader()
 	type args struct {
@@ -14,7 +22,7 @@ func TestUploaderImpl_Upload(t *testing.T) {
 	}{
 		{
 			args: args{
-				localPath: "/mnt/c/Users/dengjiawen/Downloads/ddd1.md ",
+				localPath: "/mnt/c/Users/dengjiawen/Downloads/ddd1.md",
 			},
 			wantErr: false,
 		},

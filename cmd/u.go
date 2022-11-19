@@ -6,8 +6,8 @@ package cmd
 
 import (
 	"bufio"
-	"du/tools/download"
 	"du/tools/regs"
+	"du/tools/upload"
 	"fmt"
 	"os"
 	"strings"
@@ -21,13 +21,14 @@ var uCmd = &cobra.Command{
 	Short: "将 markdown 中的本地图片通过 picgo 上传到图床",
 	Long: `将 markdown 中的本地图片通过 picgo 上传到图床. For example:
 
-du u --from README.md --picgo C:\picgo.exe`,
+du u --from README.md `,
 	Run: func(cmd *cobra.Command, args []string) {
 		from := cmd.Flag("from").Value.String()
 		picgo := cmd.Flag("picgo").Value.String()
 		fmt.Println("[上传] ", from, picgo)
 
-		err := u(from, picgo)
+		to := from + uploadFilePrefix
+		err := u(from, to, picgo)
 		if err != nil {
 			fmt.Println(err)
 			return
@@ -37,7 +38,7 @@ du u --from README.md --picgo C:\picgo.exe`,
 	},
 }
 
-func u(from, picgo string) error {
+func u(from, to, picgo string) error {
 	// 输入
 	formFile, err := os.Open(from)
 	if err != nil {
@@ -48,7 +49,8 @@ func u(from, picgo string) error {
 	fromBuf := bufio.NewReader(formFile)
 
 	// 输出
-	toFile, err := os.OpenFile(from+downloadFilePrefix, os.O_CREATE|os.O_WRONLY, 0666)
+	// 输出
+	toFile, err := os.OpenFile(to, os.O_CREATE|os.O_WRONLY, 0666)
 	if err != nil {
 		fmt.Println(err)
 		return err
@@ -57,7 +59,7 @@ func u(from, picgo string) error {
 	toBuf := bufio.NewWriter(toFile)
 
 	// 下载器
-	downloader := download.NewDownLoader(dir)
+	uploader := upload.NewUploader()
 
 	// 读取
 	for {
@@ -71,7 +73,7 @@ func u(from, picgo string) error {
 		if len(urls) > 0 {
 			for _, url := range urls {
 				// 下载
-				newUrl, err := downloader.DownLoad(url)
+				newUrl, err := uploader.Upload(url)
 				if err != nil {
 					fmt.Println(err)
 					return err
@@ -81,7 +83,6 @@ func u(from, picgo string) error {
 				line = strings.ReplaceAll(line, url, newUrl)
 			}
 		}
-
 		toBuf.WriteString(line)
 	}
 	toBuf.Flush()
