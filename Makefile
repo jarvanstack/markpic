@@ -17,7 +17,7 @@ build:
 
 ## release: Builds the project for release	
 .PHONY: release
-release: build
+release: clean build
 	mkdir -p $(releaseDir)
 	cp $(bindir)/$(app_name).linux $(releaseDir)/$(app_name).linux
 	cp $(bindir)/$(app_name).darwin $(releaseDir)/$(app_name).darwin
