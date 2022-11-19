@@ -18,8 +18,8 @@ import (
 // uCmd represents the u command
 var uCmd = &cobra.Command{
 	Use:   "u",
-	Short: "将 markdown 中的本地图片通过 picgo 上传到图床",
-	Long: `将 markdown 中的本地图片通过 picgo 上传到图床. For example:
+	Short: "将 markdown 中的所有本地图片通过 picgo 上传到图床",
+	Long: `将 markdown 中的所有本地图片通过 picgo 上传到图床. For example:
 
 du u --from README.md `,
 	Run: func(cmd *cobra.Command, args []string) {

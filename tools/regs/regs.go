@@ -26,7 +26,7 @@ func GetRemoteImg(text string) []string {
 	return urls
 }
 
-// GetRemoteImg 获取markdown中的本地图片链接
+// GetRemoteImg 获取markdown中的所有本地图片链接
 func GetLocalImg(text string) []string {
 	sss := imgUrlReg.FindAllStringSubmatch(text, -1)
 
