@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"runtime"
 	"strings"
 )
 
@@ -18,7 +19,13 @@ var (
 	ErrPicgoResultIsEmpty = errors.New("picgo 返回值为空")
 )
 
+var (
+	ostype = runtime.GOOS
+)
+
 type Uploader interface {
+	// 路径处理
+
 	// 上传, 返回远程绝对路径
 	Upload(localPath string) (string, error)
 }
@@ -40,6 +47,16 @@ func NewUploader() Uploader {
 }
 
 func (u *UploaderImpl) Upload(localPath string) (string, error) {
+	// 统一 window 和 linux 的路径分隔符
+	if ostype == "windows" {
+		localPath = strings.ReplaceAll(localPath, `/`, `\\`)
+		if !strings.HasPrefix(localPath, `\\`) {
+			localPath = strings.ReplaceAll(localPath, `\`, `\\`)
+		}
+	} else {
+		localPath = strings.ReplaceAll(localPath, `\\`, "/")
+	}
+	// fmt.Println("[上传] 本地路径: ", localPath)
 	return upload(localPath)
 }
 

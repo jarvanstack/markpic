@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"os"
 	"path"
+	"path/filepath"
 	"strconv"
 )
 
@@ -36,8 +37,14 @@ func (d *DownLoaderImpl) DownLoad(urlStr string) (string, error) {
 	// 下载
 	err = downloadFile(urlStr, filePath, func(length, downLen int64) {
 	})
+	if err != nil {
+		return "", err
+	}
 
-	return filePath, err
+	// 获取绝对路径
+	absPath, err := filepath.Abs(filePath)
+
+	return absPath, err
 }
 
 func downloadFile(url string, localPath string, fb func(length, downLen int64)) error {
@@ -124,8 +131,8 @@ func (d *DownLoaderImpl) GetFilePath(url string) (string, error) {
 
 	// 检查文件是否存在, 如果存在添加序号
 	for i := 1; FileExist(filePath); i++ {
-		fileName = fmt.Sprintf("%d_", i) + fileName
-		filePath = path.Join(d.dir, fileName)
+		newFileName := fmt.Sprintf("%d_", i) + fileName
+		filePath = path.Join(d.dir, newFileName)
 	}
 
 	return filePath, nil

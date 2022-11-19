@@ -1,6 +1,5 @@
 /*
 Copyright © 2022 NAME HERE <EMAIL ADDRESS>
-
 */
 package cmd
 
@@ -34,7 +33,7 @@ du u --from README.md `,
 			return
 		}
 
-		fmt.Println("[上传完成]", to)
+		fmt.Println("[上传完成]", from, to)
 	},
 }
 
@@ -69,7 +68,7 @@ func u(from, to string) error {
 		}
 
 		// 获取 URL
-		urls := regs.GetRemoteImg(line)
+		urls := regs.GetLocalImg(line)
 		for _, url := range urls {
 			// 下载
 			newUrl, err := uploader.Upload(url)

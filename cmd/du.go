@@ -1,6 +1,5 @@
 /*
 Copyright © 2022 NAME HERE <EMAIL ADDRESS>
-
 */
 package cmd
 
@@ -20,7 +19,7 @@ du du --from README.md`,
 	Run: func(cmd *cobra.Command, args []string) {
 		from := cmd.Flag("from").Value.String()
 		dir := cmd.Flag("dir").Value.String()
-		fmt.Println("[下载-上传] ", from, dir)
+		fmt.Println("[下载-上传]")
 
 		toLocal := from + downloadFilePrefix
 		err := d(from, toLocal, dir)
