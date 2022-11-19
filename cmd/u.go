@@ -70,18 +70,16 @@ func u(from, to string) error {
 
 		// 获取 URL
 		urls := regs.GetRemoteImg(line)
-		if len(urls) > 0 {
-			for _, url := range urls {
-				// 下载
-				newUrl, err := uploader.Upload(url)
-				if err != nil {
-					fmt.Println(err)
-					return err
-				}
-
-				// 替换
-				line = strings.ReplaceAll(line, url, newUrl)
+		for _, url := range urls {
+			// 下载
+			newUrl, err := uploader.Upload(url)
+			if err != nil {
+				fmt.Println(err)
+				return err
 			}
+
+			// 替换
+			line = strings.ReplaceAll(line, url, newUrl)
 		}
 		toBuf.WriteString(line)
 	}
