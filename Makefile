@@ -18,11 +18,9 @@ build:
 ## release: Builds the project for release	
 .PHONY: release
 release: clean build
-	mkdir -p $(releaseDir)
-	cp $(bindir)/$(app_name).linux $(releaseDir)/$(app_name).linux
-	cp $(bindir)/$(app_name).darwin $(releaseDir)/$(app_name).darwin
-	cp $(bindir)/$(app_name).exe $(releaseDir)/$(app_name).exe
-	cd $(releaseDir) && tar -zcvf $(app_name).$(version).tar.gz $(app_name).linux $(app_name).darwin $(app_name).exe
+	tar -zcvf $(releaseDir)/$(app_name)-linux-$(version).tar.gz $(bindir)/$(app_name).linux 
+	tar -zcvf $(releaseDir)/$(app_name)-darwin-$(version).tar.gz $(bindir)/$(app_name).darwin 
+	tar -zcvf $(releaseDir)/$(app_name)-exe-$(version).tar.gz $(bindir)/$(app_name).exe 
 
 ## clean: Cleans the project
 .PHONY: clean
