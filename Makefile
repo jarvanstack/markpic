@@ -21,7 +21,7 @@ release: clean build
 	tar -zcvf $(releaseDir)/$(app_name)-linux-$(version).tar.gz $(bindir)/$(app_name).linux 
 	tar -zcvf $(releaseDir)/$(app_name)-darwin-$(version).tar.gz $(bindir)/$(app_name).darwin 
 	tar -zcvf $(releaseDir)/$(app_name)-exe-$(version).tar.gz $(bindir)/$(app_name).exe 
-
+	git tag -d $(version)
 ## clean: Cleans the project
 .PHONY: clean
 clean:
