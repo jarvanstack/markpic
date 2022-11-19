@@ -17,27 +17,31 @@ var duCmd = &cobra.Command{
 
 du du --from README.md`,
 	Run: func(cmd *cobra.Command, args []string) {
-		from := cmd.Flag("from").Value.String()
-		dir := cmd.Flag("dir").Value.String()
-		fmt.Println("[下载-上传]")
-
-		toLocal := from + downloadFilePrefix
-		err := d(from, toLocal, dir)
-		if err != nil {
-			fmt.Println(err)
-			return
-		}
-
-		fromLocal := toLocal
-		toRemote := from + uploadFilePrefix
-		err = u(fromLocal, toRemote)
-		if err != nil {
-			fmt.Println(err)
-			return
-		}
-
-		fmt.Println("[下载-上传完成]", fromLocal, toRemote)
+		du(cmd)
 	},
+}
+
+func du(cmd *cobra.Command) {
+	from := cmd.Flag("from").Value.String()
+	dir := cmd.Flag("dir").Value.String()
+	fmt.Println("[下载-上传]")
+
+	toLocal := from + downloadFilePrefix
+	err := d(from, toLocal, dir)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	fromLocal := toLocal
+	toRemote := from + uploadFilePrefix
+	err = u(fromLocal, toRemote)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	fmt.Println("[下载-上传完成]", fromLocal, toRemote)
 }
 
 func init() {

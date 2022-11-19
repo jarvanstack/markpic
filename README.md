@@ -64,7 +64,7 @@ Use "du [command] --help" for more information about a command.
 * 现在 **du 可以帮助我们一键下载和上传**
 
 ```bash
-PS C:\c_code\du> du du --from test.md
+PS C:\c_code\du> du -f test.md
 [下载-上传]
 [下载-上传完成] .\test.md.download.md .\test.md.upload.md
 PS C:\c_code\du> ls
