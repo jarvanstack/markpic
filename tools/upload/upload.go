@@ -3,6 +3,7 @@ package upload
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"strings"
@@ -39,42 +40,46 @@ func NewUploader() Uploader {
 }
 
 func (u *UploaderImpl) Upload(localPath string) (string, error) {
-	var req Request
-	req.List = append(req.List, localPath)
+	return upload(localPath)
+}
 
-	reqBs, err := json.Marshal(req)
+func upload(localPath string) (string, error) {
+
+	url := "http://127.0.0.1:36677/upload"
+	method := "POST"
+
+	data := fmt.Sprintf(`{"list":["%s"]}`, localPath)
+	payload := strings.NewReader(data)
+
+	client := &http.Client{}
+	req, err := http.NewRequest(method, url, payload)
+
 	if err != nil {
+		fmt.Println(err)
+		return "", err
+	}
+	req.Header.Add("User-Agent", "apifox/1.0.0 (https://www.apifox.cn)")
+	req.Header.Add("Content-Type", "application/json")
+
+	res, err := client.Do(req)
+	if err != nil {
+		fmt.Println(err)
+		return "", err
+	}
+	defer res.Body.Close()
+
+	body, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		fmt.Println(err)
 		return "", err
 	}
 
-	// 发送请求
-	resp, err := http.Post(url, "application/json", strings.NewReader(string(reqBs)))
+	var resp Response
+	err = json.Unmarshal(body, &resp)
 	if err != nil {
-		return "", err
-	}
-	defer resp.Body.Close()
-
-	bs, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
+		fmt.Println(err)
 		return "", err
 	}
 
-	// 解析返回值
-	var respData Response
-	err = json.Unmarshal(bs, &respData)
-	if err != nil {
-		return "", err
-	}
-
-	// 上传失败
-	if !respData.Success {
-		return "", ErrPicgoUpload
-	}
-
-	// 返回值为空
-	if len(respData.Result) == 0 {
-		return "", ErrPicgoResultIsEmpty
-	}
-
-	return respData.Result[0], nil
+	return resp.Result[0], nil
 }
