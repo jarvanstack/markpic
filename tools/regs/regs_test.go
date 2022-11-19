@@ -43,7 +43,7 @@ func TestGetMarkdownImageUrls(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := GetMarkdownImageUrls(tt.args.text); !reflect.DeepEqual(got, tt.want) {
+			if got := GetRemoteImg(tt.args.text); !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("GetMarkdownImageUrls() = %v, want %v", got, tt.want)
 			}
 		})

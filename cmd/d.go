@@ -25,62 +25,72 @@ var dCmd = &cobra.Command{
 	Short: "将 markdown 中的图片下载到本地",
 	Long: `将 markdown 中的图片下载到本地. 例如:
 
-du d -f README.md -d tmp/`,
+du d --from README.md -dir tmp/`,
 	Run: func(cmd *cobra.Command, args []string) {
 		from := cmd.Flag("from").Value.String()
 		dir := cmd.Flag("dir").Value.String()
 		fmt.Println("[下载] ", from, dir)
 
-		// 输入
-		formFile, err := os.Open(from)
+		err := d(from, dir)
 		if err != nil {
 			fmt.Println(err)
 			return
 		}
-		defer formFile.Close()
-		fromBuf := bufio.NewReader(formFile)
-
-		// 输出
-		toFile, err := os.OpenFile(from+downloadFilePrefix, os.O_CREATE|os.O_WRONLY, 0666)
-		if err != nil {
-			fmt.Println(err)
-			return
-		}
-		defer toFile.Close()
-		toBuf := bufio.NewWriter(toFile)
-
-		// 下载器
-		downloader := download.NewDownLoader(dir)
-
-		// 读取
-		for {
-			line, err := fromBuf.ReadString('\n')
-			if err != nil {
-				break
-			}
-
-			// 如果是图片
-			urls := regs.GetMarkdownImageUrls(line)
-			if len(urls) > 0 {
-				for _, url := range urls {
-					// 下载
-					newUrl, err := downloader.DownLoad(url)
-					if err != nil {
-						fmt.Println(err)
-						return
-					}
-
-					// 替换
-					line = strings.ReplaceAll(line, url, newUrl)
-				}
-			}
-
-			toBuf.WriteString(line)
-		}
-		toBuf.Flush()
 
 		fmt.Println("[下载完成]", from, dir)
 	},
+}
+
+func d(from, dir string) error {
+	// 输入
+	formFile, err := os.Open(from)
+	if err != nil {
+		fmt.Println(err)
+		return err
+	}
+	defer formFile.Close()
+	fromBuf := bufio.NewReader(formFile)
+
+	// 输出
+	toFile, err := os.OpenFile(from+downloadFilePrefix, os.O_CREATE|os.O_WRONLY, 0666)
+	if err != nil {
+		fmt.Println(err)
+		return err
+	}
+	defer toFile.Close()
+	toBuf := bufio.NewWriter(toFile)
+
+	// 下载器
+	downloader := download.NewDownLoader(dir)
+
+	// 读取
+	for {
+		line, err := fromBuf.ReadString('\n')
+		if err != nil {
+			break
+		}
+
+		// 获取 URL
+		urls := regs.GetRemoteImg(line)
+		if len(urls) > 0 {
+			for _, url := range urls {
+				// 下载
+				newUrl, err := downloader.DownLoad(url)
+				if err != nil {
+					fmt.Println(err)
+					return err
+				}
+
+				// 替换
+				line = strings.ReplaceAll(line, url, newUrl)
+			}
+		}
+
+		toBuf.WriteString(line)
+	}
+	toBuf.Flush()
+
+	return nil
 }
 
 func init() {

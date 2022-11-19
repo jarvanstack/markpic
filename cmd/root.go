@@ -11,9 +11,8 @@ import (
 )
 
 var (
-	from  string
-	dir   string
-	picgo string
+	from string
+	dir  string
 )
 
 // rootCmd represents the base command when called without any subcommands
@@ -51,8 +50,6 @@ func init() {
 		"需要处理的文件")
 	rootCmd.PersistentFlags().StringVarP(&dir, "dir", "d", "images/",
 		"图片存放的目录")
-	rootCmd.PersistentFlags().StringVarP(&picgo, "picgo", "p", "",
-		"picgo 程序地址")
 
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.
