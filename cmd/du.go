@@ -31,13 +31,13 @@ du du --from README.md`,
 
 		fromLocal := toLocal
 		toRemote := from + uploadFilePrefix
-		err = u(fromLocal, toRemote, dir)
+		err = u(fromLocal, toRemote)
 		if err != nil {
 			fmt.Println(err)
 			return
 		}
 
-		fmt.Println("[下载-上传完成]", from, dir)
+		fmt.Println("[下载-上传完成]", fromLocal, toRemote)
 	},
 }
 

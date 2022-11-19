@@ -25,21 +25,20 @@ var uCmd = &cobra.Command{
 du u --from README.md `,
 	Run: func(cmd *cobra.Command, args []string) {
 		from := cmd.Flag("from").Value.String()
-		picgo := cmd.Flag("picgo").Value.String()
-		fmt.Println("[上传] ", from, picgo)
+		fmt.Println("[上传] ", from)
 
 		to := from + uploadFilePrefix
-		err := u(from, to, picgo)
+		err := u(from, to)
 		if err != nil {
 			fmt.Println(err)
 			return
 		}
 
-		fmt.Println("[上传完成]", from, picgo)
+		fmt.Println("[上传完成]", to)
 	},
 }
 
-func u(from, to, picgo string) error {
+func u(from, to string) error {
 	// 输入
 	formFile, err := os.Open(from)
 	if err != nil {
