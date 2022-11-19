@@ -6,11 +6,12 @@ package cmd
 
 import (
 	"bufio"
-	"du/tools/regs"
-	"du/tools/upload"
 	"fmt"
 	"os"
 	"strings"
+
+	"github.com/dengjiawen8955/du/tools/regs"
+	"github.com/dengjiawen8955/du/tools/upload"
 
 	"github.com/spf13/cobra"
 )
