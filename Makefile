@@ -27,6 +27,7 @@ release: clean build
 clean:
 	rm -rf $(bindir)/*
 	rm -rf $(releaseDir)/*
+	rm -rf images/*
 	go clean
 
 ## help: Show this help info.

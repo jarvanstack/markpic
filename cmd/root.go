@@ -5,6 +5,7 @@ Copyright © 2022 NAME HERE <EMAIL ADDRESS>
 package cmd
 
 import (
+	"fmt"
 	"os"
 
 	"github.com/spf13/cobra"
@@ -22,16 +23,35 @@ var (
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
-	Use:   "du",
+	Use:   "du [command][flags]",
 	Short: "markdown 图片下载上传工具.",
 	Long: `markdown 图片下载上传工具. 例如:
 
 # 一键下载 markdown 中图片, 并上传图片到图床并替换链接
-du --f test.md`,
+du test.md`,
+	Args: cobra.MatchAll(cobra.ArbitraryArgs), // 任意参数
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
 	Run: func(cmd *cobra.Command, args []string) {
-		du(cmd)
+		var from, dir string
+
+		if len(args) > 0 {
+			from = args[0]
+		} else {
+			from = cmd.Flag("from").Value.String()
+		}
+
+		if len(args) > 1 {
+			dir = args[1]
+		} else {
+			dir = cmd.Flag("dir").Value.String()
+		}
+
+		err := du(from, dir)
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
 	},
 }
 
