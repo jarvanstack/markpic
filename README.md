@@ -1,46 +1,28 @@
 # du
 
-将 markdown 中的所有本地图片通过 picgo 上传到图床
+一键将 markdown 中的所有图片下载到本地, 并通过 picgo 上传到图床
+
+![示例图](https://markdown-1304103443.cos.ap-guangzhou.myqcloud.com/2022-02-0420221120105128.png)
 
 ## 安装
+
+(1) 方法1 通过 go install 直接安装
 
 ```bash
 go install github.com/dengjiawen8955/du@latest
 ```
 
-或者下载编译好的二进制文件并放到 PATH 中
+(2) 方法2 下载编译好的二进制文件并放到 PATH 中
 
 下载地址: <https://github.com/dengjiawen8955/du/releases>
 
 ## 使用
 
 ```bash
-$ du -h
-markdown 图片下载上传工具. 例如:
-
-# 将图片下载到本地文件夹中      
-du d --from test.md --dir images/
-# 将图片上传到图床并自动替换到新文件夹
-du u --from test.local.md
-# 一键下载和上传到图床
-du --from test.md
-
-Usage:
-  du [command]
-
-Available Commands:
-  completion  Generate the autocompletion script for the specified shell
-  d           将 markdown 中的图片下载到本地
-  u           将 markdown 中的所有本地图片通过 picgo 上传到图床
-  du          du 一键下载 markdown 中图片, 并上传图片到图床并替换链接
-  help        Help about any command
-
-Flags:
-  -d, --dir string    图片存放的目录 (default "images/")
-  -f, --from string   需要处理的文件 (default "README.md")
-  -h, --help          help for du
-
-Use "du [command] --help" for more information about a command.
+# 一键将 markdown 中的所有图片下载到本地, 并通过 picgo 上传到图床
+du test.md
+# 查看更多使用方法
+du --help
 ```
 
 ## 使用实例
@@ -61,16 +43,12 @@ Use "du [command] --help" for more information about a command.
 
 * 所以我们需要将图片下载到本地, 然后再上传到图床
 * 但是这个操作如果图片比较多的话比较繁琐, 而且容易遗漏
-* 现在 **du 可以帮助我们一键下载和上传**
+* 现在 **du 可以帮助我们一键将 markdown 中的所有图片下载到本地, 并通过 picgo 上传到图床**
 
 ```bash
-PS C:\c_code\du> du -f test.md
+PS C:\c_code\du> du  test.md
 [下载-上传]
 [下载-上传完成] .\test.md.download.md .\test.md.upload.md
-PS C:\c_code\du> ls
--a---          2022/11/19    17:36            473 test.md
--a---          2022/11/19    17:36            108 test.md.download.md
--a---          2022/11/19    17:36            156 test.md.upload.md
 ```
 
 test.md.download.md 内容如下
@@ -92,3 +70,9 @@ test.md.upload.md 内容如下
 ```
 
 因为自己搭建的图床没有防盗链机制, 所以可以直接在其他平台同步
+
+## 注意
+
+* 该程序调用 PicGo 客户端的接口上传图片, 使用前需要下载 PicGo 客户端并配置好图床, 保持 PicGo 客户端正常运行
+
+
