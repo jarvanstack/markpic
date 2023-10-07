@@ -47,6 +47,9 @@ func (d *DownLoaderImpl) DownLoad(urlStr string) (string, error) {
 		return "", err
 	}
 
+	// 转换为斜杠
+	relPath = filepath.ToSlash(relPath)
+
 	// 返回相对路径
 	return relPath, nil
 }
