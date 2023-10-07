@@ -87,7 +87,7 @@ func LocalIp() string {
 
 func upload(localPath string) (string, error) {
 
-	url := LocalIp() + ":36677/upload"
+	url := "http://" + LocalIp() + ":36677/upload"
 	method := "POST"
 
 	data := fmt.Sprintf(`{"list":["%s"]}`, localPath)
