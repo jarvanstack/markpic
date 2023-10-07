@@ -9,8 +9,8 @@ import (
 	"os"
 	"strings"
 
-	"github.com/dengjiawen8955/du/tools/download"
-	"github.com/dengjiawen8955/du/tools/regs"
+	"github.com/jarvanstack/markpic/tools/download"
+	"github.com/jarvanstack/markpic/tools/regs"
 
 	"github.com/spf13/cobra"
 )
@@ -21,7 +21,7 @@ var dCmd = &cobra.Command{
 	Short: "将 markdown 中的图片下载到本地",
 	Long: `将 markdown 中的图片下载到本地. 例如:
 
-du d --from README.md -dir tmp/`,
+markpic d --from README.md -dir tmp/`,
 	Run: func(cmd *cobra.Command, args []string) {
 		from := cmd.Flag("from").Value.String()
 		dir := cmd.Flag("dir").Value.String()
@@ -60,11 +60,22 @@ func d(from, to, dir string) error {
 	// 下载器
 	downloader := download.NewDownLoader(dir)
 
+	isSkip := false
+
 	// 读取
 	for {
 		line, err := fromBuf.ReadString('\n')
 		if err != nil {
 			break
+		}
+
+		if strings.HasPrefix(line, "```") {
+			isSkip = !isSkip
+		}
+
+		if isSkip {
+			toBuf.WriteString(line)
+			continue
 		}
 
 		// 获取 URL

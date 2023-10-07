@@ -9,13 +9,10 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// duCmd represents the du command
+// duCmd represents the markpic command
 var duCmd = &cobra.Command{
 	Use:   "du",
-	Short: "du 一键下载 markdown 中图片, 并上传图片到图床并替换链接",
-	Long: `du 一键下载 markdown 中图片, 并上传图片到图床并替换链接. For example:
-
-du du --from README.md`,
+	Short: "先 d(下载) 再 u(上传)",
 	Run: func(cmd *cobra.Command, args []string) {
 		from := cmd.Flag("from").Value.String()
 		dir := cmd.Flag("dir").Value.String()

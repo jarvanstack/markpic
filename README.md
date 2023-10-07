@@ -1,28 +1,48 @@
-# du
+# markpic
 
 一键将 markdown 中的所有图片下载到本地, 并通过 picgo 上传到图床
 
-![示例图](https://markdown-1304103443.cos.ap-guangzhou.myqcloud.com/2022-02-0420221120105128.png)
 
 ## 安装
 
 (1) 方法1 通过 go install 直接安装
 
 ```bash
-go install github.com/dengjiawen8955/du@latest
+go install github.com/jarvanstack/markpic@latest
 ```
 
 (2) 方法2 下载编译好的二进制文件并放到 PATH 中
 
-下载地址: <https://github.com/dengjiawen8955/du/releases>
+下载地址: <https://github.com/jarvanstack/markpic/releases>
 
 ## 使用
 
 ```bash
 # 一键将 markdown 中的所有图片下载到本地, 并通过 picgo 上传到图床
-du test.md
-# 查看更多使用方法
-du --help
+markpic test.md
+```
+
+```bash
+$ markpic --help
+一键将 markdown 中的所有图片下载到本地, 并通过 picgo 上传到图床
+
+Usage:
+  markpic [command] [flags]
+  markpic [command]
+
+Available Commands:
+  completion  Generate the autocompletion script for the specified shell
+  d           将 markdown 中的图片下载到本地
+  du          先 d(下载) 再 u(上传)
+  help        Help about any command
+  u           将 markdown 中的所有本地图片通过 picgo 上传到图床
+
+Flags:
+  -d, --dir string    图片存放的目录 (default "images/")
+  -f, --from string   需要处理的源文件 (default "source.md")
+  -h, --help          help for markpic
+
+Use "markpic [command] --help" for more information about a command.
 ```
 
 ## 使用实例
@@ -43,10 +63,10 @@ du --help
 
 * 所以我们需要将图片下载到本地, 然后再上传到图床
 * 但是这个操作如果图片比较多的话比较繁琐, 而且容易遗漏
-* 现在 **du 可以帮助我们一键将 markdown 中的所有图片下载到本地, 并通过 picgo 上传到图床**
+* 现在 **markpic 可以帮助我们一键将 markdown 中的所有图片下载到本地, 并通过 picgo 上传到图床**
 
 ```bash
-PS C:\c_code\du> du  test.md
+PS C:\c_code\markpic> markpic  test.md
 [下载-上传]
 [下载-上传完成] .\test.md.download.md .\test.md.upload.md
 ```
@@ -56,7 +76,7 @@ test.md.download.md 内容如下
 ```markdown
 六边形架构
 
-![image.png](C:\c_code\du\images\)
+![image.png](C:\c_code\markpic\images\)
 
 ```
 

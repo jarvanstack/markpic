@@ -9,8 +9,8 @@ import (
 	"os"
 	"strings"
 
-	"github.com/dengjiawen8955/du/tools/regs"
-	"github.com/dengjiawen8955/du/tools/upload"
+	"github.com/jarvanstack/markpic/tools/regs"
+	"github.com/jarvanstack/markpic/tools/upload"
 
 	"github.com/spf13/cobra"
 )
@@ -21,7 +21,7 @@ var uCmd = &cobra.Command{
 	Short: "将 markdown 中的所有本地图片通过 picgo 上传到图床",
 	Long: `将 markdown 中的所有本地图片通过 picgo 上传到图床. For example:
 
-du u --from README.md `,
+markpic u --from README.md `,
 	Run: func(cmd *cobra.Command, args []string) {
 		from := cmd.Flag("from").Value.String()
 		fmt.Println("[上传] ", from)
@@ -60,11 +60,22 @@ func u(from, to string) error {
 	// 下载器
 	uploader := upload.NewUploader()
 
+	isSkip := false
+
 	// 读取
 	for {
 		line, err := fromBuf.ReadString('\n')
 		if err != nil {
 			break
+		}
+
+		if strings.HasPrefix(line, "```") {
+			isSkip = !isSkip
+		}
+
+		if isSkip {
+			toBuf.WriteString(line)
+			continue
 		}
 
 		// 获取 URL

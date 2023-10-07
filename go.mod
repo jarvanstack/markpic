@@ -1,4 +1,4 @@
-module github.com/dengjiawen8955/du
+module github.com/jarvanstack/markpic
 
 go 1.18
 

@@ -41,10 +41,14 @@ func (d *DownLoaderImpl) DownLoad(urlStr string) (string, error) {
 		return "", err
 	}
 
-	// 获取绝对路径
-	absPath, err := filepath.Abs(filePath)
+	// 获取相对路径
+	relPath, err := filepath.Rel("", filePath)
+	if err != nil {
+		return "", err
+	}
 
-	return absPath, err
+	// 返回相对路径
+	return relPath, nil
 }
 
 func downloadFile(url string, localPath string, fb func(length, downLen int64)) error {

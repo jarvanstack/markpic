@@ -22,7 +22,7 @@ func TestUploaderImpl_Upload(t *testing.T) {
 	}{
 		{
 			args: args{
-				localPath: `C:\c_code\du\images\1668760978594-47a93e74-e87e-49a3-946c-466ffd4f952d.jpeg`,
+				localPath: `C:\c_code\markpic\images\1668760978594-47a93e74-e87e-49a3-946c-466ffd4f952d.jpeg`,
 			},
 			wantErr: false,
 		},

@@ -23,15 +23,9 @@ var (
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
-	Use:   "du [command][flags]",
-	Short: "markdown 图片下载上传工具.",
-	Long: `markdown 图片下载上传工具. 例如:
-
-# 一键下载 markdown 中图片, 并上传图片到图床并替换链接
-du test.md`,
-	Args: cobra.MatchAll(cobra.ArbitraryArgs), // 任意参数
-	// Uncomment the following line if your bare application
-	// has an action associated with it:
+	Use:   "markpic [command]",
+	Short: "一键将 markdown 中的所有图片下载到本地, 并通过 picgo 上传到图床",
+	Args:  cobra.MatchAll(cobra.ArbitraryArgs), // 任意参数
 	Run: func(cmd *cobra.Command, args []string) {
 		var from, dir string
 
