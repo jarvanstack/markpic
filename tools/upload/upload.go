@@ -49,6 +49,12 @@ func NewUploader() Uploader {
 }
 
 func (u *UploaderImpl) Upload(localPath string) (string, error) {
+	// 绝对路径
+	localPath, err := filepath.Abs(localPath)
+	if err != nil {
+		return "", err
+	}
+
 	// 统一 window 和 linux 的路径分隔符
 	if ostype == "windows" {
 		localPath = strings.ReplaceAll(localPath, `/`, `\\`)
@@ -58,11 +64,7 @@ func (u *UploaderImpl) Upload(localPath string) (string, error) {
 	} else {
 		localPath = strings.ReplaceAll(localPath, `\\`, "/")
 	}
-	// 绝对路径
-	localPath, err := filepath.Abs(localPath)
-	if err != nil {
-		return "", err
-	}
+
 	fmt.Println("[上传] 绝对路径: ", localPath)
 
 	return upload(localPath)
