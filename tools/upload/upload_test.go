@@ -1,6 +1,8 @@
 package upload
 
-import "testing"
+import (
+	"testing"
+)
 
 /*
 curl --location --request POST 'http://127.0.0.1:36677/upload' --header 'Content-Type: application/json' --data-raw '{
@@ -37,4 +39,9 @@ func TestUploaderImpl_Upload(t *testing.T) {
 			t.Logf("UploaderImpl.Upload() = %v", got)
 		})
 	}
+}
+
+func TestLocalIp(t *testing.T) {
+	got := LocalIp()
+	t.Logf("LocalIp() = %v", got)
 }

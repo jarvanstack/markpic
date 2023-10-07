@@ -5,7 +5,9 @@ import (
 	"errors"
 	"fmt"
 	"io/ioutil"
+	"net"
 	"net/http"
+	"path/filepath"
 	"runtime"
 	"strings"
 )
@@ -57,12 +59,35 @@ func (u *UploaderImpl) Upload(localPath string) (string, error) {
 		localPath = strings.ReplaceAll(localPath, `\\`, "/")
 	}
 	// fmt.Println("[上传] 本地路径: ", localPath)
+	// 绝对路径
+	localPath, err := filepath.Abs(localPath)
+	if err != nil {
+		return "", err
+	}
+
 	return upload(localPath)
+}
+
+// 获取 ipv4 地址
+func LocalIp() string {
+	addrs, err := net.InterfaceAddrs()
+	if err != nil {
+		fmt.Println(err)
+	}
+	var ip string = "localhost"
+	for _, address := range addrs {
+		if ipnet, ok := address.(*net.IPNet); ok && !ipnet.IP.IsLoopback() {
+			if ipnet.IP.To4() != nil {
+				ip = ipnet.IP.String()
+			}
+		}
+	}
+	return ip
 }
 
 func upload(localPath string) (string, error) {
 
-	url := "http://127.0.0.1:36677/upload"
+	url := LocalIp() + ":36677/upload"
 	method := "POST"
 
 	data := fmt.Sprintf(`{"list":["%s"]}`, localPath)
@@ -96,6 +121,10 @@ func upload(localPath string) (string, error) {
 	if err != nil {
 		fmt.Println(err)
 		return "", err
+	}
+
+	if len(resp.Result) == 0 {
+		return "", ErrPicgoResultIsEmpty
 	}
 
 	return resp.Result[0], nil
