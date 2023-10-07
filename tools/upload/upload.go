@@ -58,12 +58,12 @@ func (u *UploaderImpl) Upload(localPath string) (string, error) {
 	} else {
 		localPath = strings.ReplaceAll(localPath, `\\`, "/")
 	}
-	// fmt.Println("[上传] 本地路径: ", localPath)
 	// 绝对路径
 	localPath, err := filepath.Abs(localPath)
 	if err != nil {
 		return "", err
 	}
+	fmt.Println("[上传] 绝对路径: ", localPath)
 
 	return upload(localPath)
 }
