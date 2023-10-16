@@ -1,3 +1,13 @@
+<p align="center">
+<img src="logo.png" width="200px"/>
+<br>
+<p align="center">
+ <img src="https://img.shields.io/github/stars/jarvanstack/markpic" />
+ <img src="https://img.shields.io/github/issues/jarvanstack/markpic" />
+ <img src="https://img.shields.io/github/forks/jarvanstack/markpic" />
+</p>
+</p>
+
 # markpic
 
 一键将 markdown 中的所有图片下载到本地, 并通过 picgo 上传到图床
@@ -59,7 +69,7 @@ Use "markpic [command] --help" for more information about a command.
 * 里面的网络图片因为防盗链机制, 无法再其他博客平台上同步
 * 即使在 typroa 中设置插入图片时候对网络位置的图片上传也无法上传
 
-![无法上传](https://markdown-1304103443.cos.ap-guangzhou.myqcloud.com/2022-02-0420221119171918.png)
+![无法上传](https://cdn.jarvans.com/blog/2023/2022-02-0420221119171918.png)
 
 * 所以我们需要将图片下载到本地, 然后再上传到图床
 * 但是这个操作如果图片比较多的话比较繁琐, 而且容易遗漏
