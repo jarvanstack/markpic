@@ -74,7 +74,7 @@ func d(from, to, dir string) error {
 		}
 
 		if isSkip {
-			toBuf.WriteString(line)
+			_, _ = toBuf.WriteString(line)
 			continue
 		}
 
@@ -94,11 +94,11 @@ func d(from, to, dir string) error {
 			}
 		}
 
-		toBuf.WriteString(line)
+		_, _ = toBuf.WriteString(line)
 	}
-	toBuf.Flush()
+	_ = toBuf.Flush()
 
-	return nil
+	return err
 }
 
 func init() {

@@ -74,7 +74,7 @@ func u(from, to string) error {
 		}
 
 		if isSkip {
-			toBuf.WriteString(line)
+			_, _ = toBuf.WriteString(line)
 			continue
 		}
 
@@ -91,11 +91,15 @@ func u(from, to string) error {
 			// 替换
 			line = strings.ReplaceAll(line, url, newUrl)
 		}
-		toBuf.WriteString(line)
+		_, err = toBuf.WriteString(line)
+		if err != nil {
+			fmt.Println(err)
+			return err
+		}
 	}
-	toBuf.Flush()
+	err = toBuf.Flush()
 
-	return nil
+	return err
 }
 
 func init() {
